@@ -16,7 +16,10 @@ export default function SingleCat({ cat, onVote }: catProps) {
   return (
     <Card
       sx={{ width: '180px', cursor: 'pointer', ml: '50px', mr: '50px' }}
-      onClick={() => {addVote(cat.id); onVote();}}
+      onClick={() => {
+        addVote(cat.id); 
+        onVote();
+      }}
     >
       <CardContent>
         <img

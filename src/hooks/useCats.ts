@@ -1,15 +1,27 @@
+import { useState } from 'react';
 import { getCats } from '../api/cats';
 import { Cat } from '../types/cat';
 
 export default function useCats() {
   const cats = JSON.parse(localStorage.getItem('cats') || '[]');
+  
+  const getTotalVotes = ()=>{
+    const catsCopy = [...cats];
+    let votes = 0;
+    catsCopy.forEach((cat: Cat) => {
+      votes += cat.votes || 0;
+    });
+    return votes;
+  }
 
-  function getRandomCats(){
+  const [voteCount, setVoteCount] = useState<number>(getTotalVotes);
+
+  function getRandomCats() {
     const randomCat1 = cats[Math.floor(Math.random() * cats.length)];
     const randomCat2 = cats[Math.floor(Math.random() * cats.length)];
-    return [randomCat1, randomCat2]
+    return [randomCat1, randomCat2];
   }
-  
+
   async function initializeCats() {
     const existingCats = JSON.parse(localStorage.getItem('cats') || '[]');
     if (existingCats.length === 0) {
@@ -20,20 +32,21 @@ export default function useCats() {
       localStorage.setItem('cats', JSON.stringify(initialCats));
     }
   }
-  
+
   function addVote(catID: string) {
     const catsCopy = [...cats];
     catsCopy.find((cat: Cat) => cat.id === catID).votes += 1;
-    localStorage.setItem('cats', JSON.stringify(catsCopy));
-  }
 
-  function getVotesCount() {
+    localStorage.setItem('cats', JSON.stringify(catsCopy));
     let votes = 0;
-    cats.forEach((cat: Cat) => {
+    const existingCats = JSON.parse(localStorage.getItem('cats') || '[]');
+    existingCats.forEach((cat: Cat) => {
       votes += cat.votes || 0;
     });
-    return votes;
+    setVoteCount(votes);
+    console.log(votes)
+    console.log(voteCount)
   }
 
-  return { cats, initializeCats, addVote, getVotesCount, getRandomCats };
+  return { cats, initializeCats, addVote, voteCount, getRandomCats };
 }

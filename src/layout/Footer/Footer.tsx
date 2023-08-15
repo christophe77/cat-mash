@@ -3,11 +3,11 @@ import './footer.css';
 import useCats from '../../hooks/useCats';
 
 function Footer() {
-  const { getVotesCount } = useCats();
+  const { voteCount } = useCats();
   return (
     <footer className='footer'>
       <a href='/ranking' rel='noreferrer'>
-        Voir les plus beaux chats ({getVotesCount()} votes)
+        Voir les plus beaux chats ({voteCount} votes)
       </a>
     </footer>
   );
