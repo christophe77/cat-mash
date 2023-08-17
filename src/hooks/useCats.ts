@@ -4,17 +4,17 @@ import { Cat } from '../types/cat';
 
 export default function useCats() {
   const cats = JSON.parse(localStorage.getItem('cats') || '[]');
-  
-  const getTotalVotes = ()=>{
+
+  const getTotalVotes = () => {
     const catsCopy = [...cats];
     let votes = 0;
     catsCopy.forEach((cat: Cat) => {
       votes += cat.votes || 0;
     });
     return votes;
-  }
+  };
 
-  const [voteCount, setVoteCount] = useState<number>(getTotalVotes);
+  const [voteCount, setVoteCount] = useState<number>(getTotalVotes());
 
   function getRandomCats() {
     const randomCat1 = cats[Math.floor(Math.random() * cats.length)];
@@ -44,9 +44,15 @@ export default function useCats() {
       votes += cat.votes || 0;
     });
     setVoteCount(votes);
-    console.log(votes)
-    console.log(voteCount)
   }
 
-  return { cats, initializeCats, addVote, voteCount, getRandomCats };
+  const getTopCats = () => {
+    const existingCats = JSON.parse(localStorage.getItem('cats') || '[]');
+    const sortedCats = existingCats.sort((cat1: Cat, cat2: Cat) =>
+      cat1.votes < cat2.votes ? 1 : cat1.votes > cat2.votes ? -1 : 0,
+    );
+    const sordetedAndSplittedArray = sortedCats.slice(0, 30);
+    return sordetedAndSplittedArray;
+  };
+  return { cats, initializeCats, addVote, voteCount, getRandomCats, getTopCats };
 }

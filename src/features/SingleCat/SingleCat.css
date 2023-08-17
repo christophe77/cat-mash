@@ -1,0 +1,14 @@
+.changeColorOnblur-left:focus {
+  background-color: aqua;
+}
+.changeColorOnblur-left {
+  background-color: aqua;
+  filter: blur(5px);
+}
+.changeColorOnblur-right:focus {
+    background-color: aqua;
+}
+.changeColorOnblur-right {
+    background-color: aqua;
+    filter: blur(5px);
+}
